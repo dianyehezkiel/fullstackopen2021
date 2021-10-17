@@ -1,18 +1,14 @@
-@startuml /new_note diagram
+@startuml /exampleapp/spa diagram
 skinparam sequenceMessageAlign center
-actor User
-User->Browser: Input note into input form and submit
-Browser->Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
-Browser<--Server: Response with HTTP status code 302 redirect to /exampleapp/notes
-Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
 Browser<--Server: Send HTML-code
 Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
 Browser<--Server: Send main.css
-Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
-Browser<--Server: Send main.js
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+Browser<--Server: Send spa.js
 
 note over Browser
-Browser executing main.js
+Browser executing spa.js
 that requests JSON data from server 
 end note
 
