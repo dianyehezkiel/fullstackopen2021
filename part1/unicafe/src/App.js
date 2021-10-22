@@ -17,15 +17,23 @@ const Stats = ({text, value}) => {
 }
 
 const Statistics = (props) => {
+  if(props.good !== 0 | props.neutral !== 0 | props.bad !== 0) {
+    return (
+      <div>
+        <h1>statistics</h1>
+        <Stats text='good' value={props.good} />
+        <Stats text='neutral' value={props.neutral} />
+        <Stats text='bad' value={props.bad} />
+        <Stats text='all' value={props.total} />
+        <Stats text='average' value={props.average} />
+        <Stats text='positive' value={props.positive} />
+      </div>
+    )
+  }
+  
   return (
     <div>
-      <h1>statistics</h1>
-      <Stats text='good' value={props.good} />
-      <Stats text='neutral' value={props.neutral} />
-      <Stats text='bad' value={props.bad} />
-      <Stats text='all' value={props.total} />
-      <Stats text='average' value={props.average} />
-      <Stats text='positive' value={props.positive} />
+      <p>No feedback given</p>
     </div>
   )
 }
