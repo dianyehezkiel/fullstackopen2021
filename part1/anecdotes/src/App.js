@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 
 const Button = ({ handleClick, text }) => {
   return (
-    <div>
+    <>
       <button onClick={handleClick}>{text}</button>
-    </div>
+    </>
   )
 }
 
@@ -20,10 +20,11 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
 
   const handleClickNext = () => {
     const n = Math.floor(Math.random() * anecdotes.length)
-    
+
     if (n === selected) {
       handleClickNext()
     } else {
@@ -31,9 +32,18 @@ const App = () => {
     }
   }
 
+  const handleClickVote = () => {
+    const newPoints = [...points];
+    newPoints[selected] += 1;
+
+    setPoints(newPoints);
+  }
+
   return (
     <div>
-      {anecdotes[selected]}
+      <p>{anecdotes[selected]}</p>
+      <p>has {points[selected]} votes</p>
+      <Button handleClick={handleClickVote} text='Vote' />
       <Button handleClick={handleClickNext} text='Next anecdotes' />
     </div>
   )
