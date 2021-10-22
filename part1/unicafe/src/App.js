@@ -16,6 +16,20 @@ const Stats = ({text, value}) => {
   )
 }
 
+const Statistics = (props) => {
+  return (
+    <div>
+      <h1>statistics</h1>
+      <Stats text='good' value={props.good} />
+      <Stats text='neutral' value={props.neutral} />
+      <Stats text='bad' value={props.bad} />
+      <Stats text='all' value={props.total} />
+      <Stats text='average' value={props.average} />
+      <Stats text='positive' value={props.positive} />
+    </div>
+  )
+}
+
 const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
@@ -43,13 +57,12 @@ const App = () => {
       <Button text='good' handleClick={handleClickGood} />
       <Button text='neutral' handleClick={handleClickNeutral} />
       <Button text='bad' handleClick={handleClickBad} />
-      <h1>statistics</h1>
-      <Stats text='good' value={good} />
-      <Stats text='neutral' value={neutral} />
-      <Stats text='bad' value={bad} />
-      <Stats text='all' value={total} />
-      <Stats text='average' value={average} />
-      <Stats text='positive' value={positive} />
+      <Statistics good={good}
+          neutral={neutral}
+          bad={bad}
+          total={total}
+          average={average}
+          positive={positive} />
     </div>
   )
 }
