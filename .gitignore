@@ -28,4 +28,4 @@ out
 */*/.git
 
 # ignore practice dir
-*/practice
+*/practice*
