@@ -6,6 +6,7 @@ import CountriesList from './components/CountriesList';
 function App() {
   const [countries, setCountries] = useState([]);
   const [filteredCountries, setFilteredCountries] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
     axios
@@ -15,19 +16,26 @@ function App() {
       })
   }, []);
 
-  const filterChange = (filter) => {
+  const onFilterChange = (filter) => {
     const fc = filter
-      ? countries.filter((countries) => countries.name.toLowerCase().includes(filter.toLowerCase()))
+      ? countries.filter((c) => c.name.toLowerCase().includes(filter.toLowerCase()))
       : null;
-
+    setSelectedCountry(null);
     setFilteredCountries(fc);
   };
 
+  const onClickShow = (event) => {
+    event.preventDefault();
+    const sc = [countries.find(c => c.name === event.target.id)];
+    setSelectedCountry(sc);
+  };
 
   return (
     <div>
-      <Filter onChange={filterChange} />
-      <CountriesList countries={filteredCountries} />
+      <Filter onChange={onFilterChange} />
+      <CountriesList 
+        countries={selectedCountry? selectedCountry:filteredCountries} 
+        onClickShow={onClickShow}/>
     </div>
   );
 }
