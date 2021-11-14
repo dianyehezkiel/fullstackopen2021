@@ -28,12 +28,14 @@ const PersonForm = ({ onSubmit }) => {
         name: <input
           placeholder="Add Name"
           value={newName}
-          onChange={onNameChange} />
+          onChange={onNameChange} 
+          required />
       </div>
       <div>number: <input
         placeholder="Add Phonenumber"
         value={newNumber}
-        onChange={onNumberChange} />
+        onChange={onNumberChange}
+        required />
       </div>
       <div>
         <button type="submit">add</button>
