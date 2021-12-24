@@ -48,6 +48,24 @@ const App = () => {
     }
   };
 
+  const handleDelete = (id) => {
+    const person = persons.find((person) => {
+      return person.id === id;
+    });
+
+    if(window.confirm(`Do you really want to delete ${person.name}?`)) {
+      personService
+        .deletePerson(id)
+        .catch(error => {
+          alert(`Contact is already deleted from phonebook`);
+        })
+
+      setPersons(persons.filter((person) => person.id !== id));
+    } else {
+      return;
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -55,7 +73,7 @@ const App = () => {
       <h3>Add a New Contact</h3>
       <PersonForm onSubmit={addPerson} />
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons? filteredPersons : persons} />
+      <Persons persons={filteredPersons? filteredPersons : persons} onDelete={handleDelete}/>
     </div>
   );
 };
