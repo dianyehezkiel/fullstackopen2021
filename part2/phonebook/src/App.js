@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
-import personService from './services/persons';
+import personServices from './services/persons';
 
 const App = () => {
   const [ persons, setPersons ] = useState([]);
   const [ filteredPersons, setFilteredPersons ] = useState(null);
 
   useEffect(() => {
-    personService
+    personServices
       .getAll()
       .then(initialPersons => {
         setPersons(initialPersons);
@@ -30,15 +30,26 @@ const App = () => {
     });
 
     if (personExist) {
-      alert(`${newName} is already added to phonebook`);
-      return;
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with the new one?`)) {
+        const updatedPerson = { ...personExist, number: newNumber }
+
+        personServices
+          .update(personExist.id, updatedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== personExist.id ? person : returnedPerson))
+          })
+
+        return 1;
+      } else {
+        return;
+      }
     } else {
       const newPerson = {
         name: newName,
         number: newNumber,
       };
 
-      personService
+      personServices
         .create(newPerson)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
@@ -54,7 +65,7 @@ const App = () => {
     });
 
     if(window.confirm(`Do you really want to delete ${person.name}?`)) {
-      personService
+      personServices
         .deletePerson(id)
         .catch(error => {
           alert(`Contact is already deleted from phonebook`);
