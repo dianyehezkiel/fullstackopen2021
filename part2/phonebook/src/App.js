@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Filter from './components/Filter';
+import Notification from './components/Notification';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import personServices from './services/persons';
@@ -7,6 +8,8 @@ import personServices from './services/persons';
 const App = () => {
   const [ persons, setPersons ] = useState([]);
   const [ filteredPersons, setFilteredPersons ] = useState(null);
+  const [ notifType, setNotifType ] = useState('');
+  const [ notifMessage, setNotifMessage ] = useState(null);
 
   useEffect(() => {
     personServices
@@ -36,6 +39,12 @@ const App = () => {
         personServices
           .update(personExist.id, updatedPerson)
           .then(returnedPerson => {
+            setNotifType('success');
+            setNotifMessage(`${newName}'s information has been successfully changed`);
+            setTimeout(() => {
+              setNotifType('')
+              setNotifMessage(null)
+            }, 5000);
             setPersons(persons.map(person => person.id !== personExist.id ? person : returnedPerson))
           })
 
@@ -52,8 +61,14 @@ const App = () => {
       personServices
         .create(newPerson)
         .then(returnedPerson => {
-          setPersons(persons.concat(returnedPerson))
-        })
+          setNotifType('success');
+          setNotifMessage(`Added ${newName}`);
+          setTimeout(() => {
+            setNotifType('')
+            setNotifMessage(null)
+          }, 5000);
+          setPersons(persons.concat(returnedPerson));
+        });
 
       return 1;
     }
@@ -67,6 +82,14 @@ const App = () => {
     if(window.confirm(`Do you really want to delete ${person.name}?`)) {
       personServices
         .deletePerson(id)
+        .then(() => {
+          setNotifType('success');
+          setNotifMessage(`${person.name}'s information has been deleted`)
+          setTimeout(() => {
+            setNotifType('')
+            setNotifMessage(null)
+          }, 5000)
+        })
         .catch(error => {
           alert(`Contact is already deleted from phonebook`);
         })
@@ -80,6 +103,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification type={notifType} message={notifMessage} />
       <Filter onChange={filterChange} />
       <h3>Add a New Contact</h3>
       <PersonForm onSubmit={addPerson} />
