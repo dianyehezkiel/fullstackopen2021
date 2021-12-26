@@ -84,16 +84,17 @@ const App = () => {
         .deletePerson(id)
         .then(() => {
           setNotifType('success');
-          setNotifMessage(`${person.name}'s information has been deleted`)
-          setTimeout(() => {
-            setNotifType('')
-            setNotifMessage(null)
-          }, 5000)
+          setNotifMessage(`${person.name}'s information has been deleted`);
         })
         .catch(error => {
-          alert(`Contact is already deleted from phonebook`);
+          setNotifType('error');
+          setNotifMessage(`Information of ${person.name} has already been removed from server`);
         })
-
+        
+      setTimeout(() => {
+        setNotifType('')
+        setNotifMessage(null)
+      }, 5000)
       setPersons(persons.filter((person) => person.id !== id));
     } else {
       return;
